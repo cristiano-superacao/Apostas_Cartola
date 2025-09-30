@@ -1,0 +1,6 @@
+# SuperMittos - Dependências Simplificadas para Teste Local (versões estáveis)
+fastapi==0.95.2
+uvicorn[standard]==0.20.0
+pydantic==1.10.7
+python-multipart==0.0.6
+requests==2.31.0

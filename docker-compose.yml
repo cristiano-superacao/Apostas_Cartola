@@ -1,0 +1,139 @@
+# SuperMittos Docker Configuration
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: supermittos
+      POSTGRES_USER: supermittos
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-supermittos123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U supermittos"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://supermittos:${POSTGRES_PASSWORD:-supermittos123}@postgres:5432/supermittos
+      - REDIS_URL=redis://redis:6379
+      - FOOTYSTATS_API_KEY=${FOOTYSTATS_API_KEY}
+      - SOFASCORE_API_KEY=${SOFASCORE_API_KEY}
+      - PYTHONPATH=/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # ETL Scheduler (Celery Worker)
+  etl-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: celery -A app.main worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://supermittos:${POSTGRES_PASSWORD:-supermittos123}@postgres:5432/supermittos
+      - REDIS_URL=redis://redis:6379
+      - FOOTYSTATS_API_KEY=${FOOTYSTATS_API_KEY}
+      - SOFASCORE_API_KEY=${SOFASCORE_API_KEY}
+      - PYTHONPATH=/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    restart: unless-stopped
+
+  # ETL Scheduler (Celery Beat)
+  etl-scheduler:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: celery -A app.main beat --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://supermittos:${POSTGRES_PASSWORD:-supermittos123}@postgres:5432/supermittos
+      - REDIS_URL=redis://redis:6379
+      - PYTHONPATH=/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: supermittos-network

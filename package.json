@@ -1,0 +1,32 @@
+{
+  "name": "supermittos-scripts",
+  "version": "1.0.0",
+  "description": "Scripts de configuração e desenvolvimento para SuperMittos",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:frontend",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "npm run start:frontend",
+    "start:frontend": "cd frontend && npm start",
+    "lint": "npm run lint:frontend",
+    "lint:frontend": "cd frontend && npm run lint",
+    "test": "npm run test:frontend",
+    "test:frontend": "cd frontend && npm run test",
+    "check-deps": "node scripts/check-dependencies.js",
+    "setup:db": "node scripts/setup-database.js",
+    "setup:env": "node scripts/setup-env.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.6",
+    "cross-env": "^7.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
