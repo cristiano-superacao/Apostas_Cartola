@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+
 import { useTeamHistory } from '../hooks/useTeamHistory'
 import { Championship } from '../types/championships'
 import QuickActions from './QuickActions'
@@ -16,12 +16,11 @@ interface DashboardProps {
   onViewChange: (view: string) => void
 }
 
-export default function Dashboard({ data, championship, onViewChange }: DashboardProps) {
+export default function Dashboard({ data, onViewChange }: DashboardProps) {
   const {
     teamHistory,
     performanceMetrics,
-    getRecentTeams,
-    loading: historyLoading
+    getRecentTeams
   } = useTeamHistory()
 
   if (!data) {

@@ -27,8 +27,8 @@ function App() {
   } = useChampionshipData()
 
   // Legacy data for fallback
-  const [players, setPlayers] = useState([])
-  const [dashboardData, setDashboardData] = useState(null)
+  const [players, setPlayers] = useState<any[]>([])
+  const [dashboardData, setDashboardData] = useState<any>(null)
 
   useEffect(() => {
     const loadFallbackData = async () => {
@@ -85,15 +85,15 @@ function App() {
 
     switch (currentView) {
       case 'players':
-        return <PlayerList players={currentPlayers} championship={selectedChampionship} />
+        return <PlayerList players={currentPlayers} />
       case 'optimizer':
-        return <TeamOptimizer players={currentPlayers} championship={selectedChampionship} />
+        return <TeamOptimizer players={currentPlayers} championship={selectedChampionship || undefined} />
       case 'market':
-        return <MarketStatus championship={selectedChampionship} />
+        return <MarketStatus />
       case 'history':
-        return <TeamHistoryView championship={selectedChampionship} />
+        return <TeamHistoryView />
       default:
-        return <Dashboard data={currentDashData} championship={selectedChampionship} onViewChange={setCurrentView} />
+        return <Dashboard data={currentDashData} championship={selectedChampionship || undefined} onViewChange={setCurrentView} />
     }
   }
 

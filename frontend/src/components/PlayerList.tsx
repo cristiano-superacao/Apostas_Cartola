@@ -1,11 +1,7 @@
-interface Player {
-  id: number
-  name: string
-  position: string
-  team: string
-  price: number
-  rating: number
-}
+
+import { Player } from '../types/championships'
+
+import { formatCurrency } from '../lib/translations'
 
 interface PlayerListProps {
   players: Player[]
@@ -32,9 +28,9 @@ export default function PlayerList({ players }: PlayerListProps) {
                     {player.position}
                   </span>
                 </div>
-                <div className="text-sm text-gray-600 mb-2">{player.team}</div>
+                <div className="text-sm text-gray-600 mb-2">{player.team.name}</div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-900">€{player.price.toLocaleString()}</span>
+                  <span className="text-sm font-medium text-gray-900">{formatCurrency(player.marketValue)}</span>
                   <div className="flex items-center">
                     <span className="text-sm font-medium text-gray-900 mr-2">{player.rating}</span>
                     <div className="w-12 bg-gray-200 rounded-full h-2">
@@ -84,10 +80,10 @@ export default function PlayerList({ players }: PlayerListProps) {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {player.team}
+                    {player.team.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    €{player.price.toLocaleString()}
+                    {formatCurrency(player.marketValue)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">

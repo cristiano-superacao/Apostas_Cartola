@@ -51,10 +51,10 @@ export default function ResponsiveHeader({ title, championship, actionButton }: 
         <div className="mt-3 sm:hidden">
           <div className="flex items-center justify-between text-xs text-gray-500">
             <span>
-              {championship.country} • {championship.totalPlayers} jogadores
+              {championship.country} • {championship.teams} times
             </span>
             <span>
-              Valor médio: R$ {championship.averageMarketValue.toLocaleString('pt-BR')}
+              Temporada: {championship.season}
             </span>
           </div>
         </div>

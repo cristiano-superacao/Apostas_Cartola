@@ -66,10 +66,12 @@ export const useTeamHistory = () => {
 
   const generatePredictions = useCallback((players: Player[], formation: string): TeamPredictions => {
     const avgRating = players.reduce((sum, p) => sum + p.rating, 0) / players.length
+    const formationBonus = formation.includes('3') ? 5 : formation.includes('5') ? -5 : 0
+    const adjustedRating = avgRating + formationBonus
     const totalValue = players.reduce((sum, p) => sum + p.marketValue, 0)
     
     // Calculate expected performance based on player ratings and market values
-    const expectedPoints = Math.round(avgRating * 0.8 + (totalValue / 1000000) * 0.1)
+    const expectedPoints = Math.round(adjustedRating * 0.8 + (totalValue / 1000000) * 0.1)
     const expectedGoals = Math.round(players.filter(p => ['ST', 'LW', 'RW', 'CAM'].includes(p.position)).length * 3.5)
     const expectedAssists = Math.round(players.filter(p => ['CM', 'CAM', 'LW', 'RW'].includes(p.position)).length * 2.8)
     const expectedCleanSheets = Math.round(players.filter(p => ['GK', 'CB', 'LB', 'RB', 'CDM'].includes(p.position)).length * 1.2)

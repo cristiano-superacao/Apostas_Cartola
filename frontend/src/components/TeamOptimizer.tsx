@@ -1,17 +1,7 @@
 import { useState } from 'react'
 import { useTeamHistory } from '../hooks/useTeamHistory'
-import { Championship } from '../types/championships'
+import { Championship, Player } from '../types/championships'
 import { TeamPredictions } from '../types/history'
-
-interface Player {
-  id: number
-  name: string
-  position: string
-  team: string
-  price: number
-  rating: number
-  marketValue?: number
-}
 
 interface TeamOptimizerProps {
   players: Player[]
@@ -60,7 +50,7 @@ export default function TeamOptimizer({ players, championship }: TeamOptimizerPr
     const expectedPoints = Math.round(basePoints * (multiplier.attack + multiplier.defense + multiplier.midfield) / 3)
     
     // Calcular confiança baseada na qualidade e custo do time
-    const totalCost = team.reduce((sum, player) => sum + (player.marketValue || player.price), 0)
+    const totalCost = team.reduce((sum, player) => sum + player.marketValue, 0)
     const budgetUtilization = totalCost / budget
     const confidence = Math.min(95, Math.round(avgRating + (budgetUtilization * 20)))
     
@@ -73,8 +63,12 @@ export default function TeamOptimizer({ players, championship }: TeamOptimizerPr
       expectedPoints,
       expectedGoals,
       expectedAssists,
+      expectedCleanSheets: formation.includes('5') ? 8 : 5,
       confidence,
       riskLevel,
+      strongPositions: [],
+      weakPositions: [],
+      keyPlayers: [],
       notes: `Previsão baseada no rating médio de ${avgRating.toFixed(1)} e formação ${formation}`
     }
   }
@@ -94,27 +88,30 @@ export default function TeamOptimizer({ players, championship }: TeamOptimizerPr
     
     try {
       const predictions = generatePredictions(optimizedTeam)
-      const totalCost = optimizedTeam.reduce((sum, player) => sum + (player.marketValue || player.price), 0)
+      const totalCost = optimizedTeam.reduce((sum, player) => sum + player.marketValue, 0)
       
-      const teamData = {
-        name: teamName.trim(),
+      console.log(`Time criado: ${teamName}, Orçamento: ${budget}, Custo total: ${totalCost}, Predições:`, predictions)
+
+      await saveTeam(
+        teamName,
         championship,
         formation,
         budget,
-        totalCost,
-        players: optimizedTeam.map(player => ({
+        optimizedTeam.map(player => ({
           id: player.id,
           name: player.name,
           position: player.position,
           team: player.team,
           rating: player.rating,
-          marketValue: player.marketValue || player.price
+          marketValue: player.marketValue,
+          age: player.age,
+          nationality: player.nationality,
+          photo: player.photo,
+          stats: player.stats,
+          championship: player.championship
         })),
-        predictions,
-        status: 'active' as const
-      }
-
-      await saveTeam(teamData)
+        `Previsão baseada no rating médio de ${avgRating.toFixed(1)} e formação ${formation}`
+      )
       
       // Reset form
       setTeamName('')
@@ -129,7 +126,7 @@ export default function TeamOptimizer({ players, championship }: TeamOptimizerPr
     }
   }
 
-  const totalCost = optimizedTeam.reduce((sum, player) => sum + (player.marketValue || player.price), 0)
+  const totalCost = optimizedTeam.reduce((sum, player) => sum + player.marketValue, 0)
   const avgRating = optimizedTeam.length > 0 
     ? optimizedTeam.reduce((sum, player) => sum + player.rating, 0) / optimizedTeam.length 
     : 0
@@ -298,7 +295,7 @@ export default function TeamOptimizer({ players, championship }: TeamOptimizerPr
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="font-semibold text-gray-900 truncate">{player.name}</h4>
                   <span className="text-sm font-medium text-green-600 flex-shrink-0 ml-2">
-                    €{player.price.toLocaleString()}
+                    {player.marketValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
@@ -306,7 +303,7 @@ export default function TeamOptimizer({ players, championship }: TeamOptimizerPr
                     <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
                       {player.position}
                     </span>
-                    <span className="text-gray-600 text-xs">{player.team}</span>
+                    <span className="text-gray-600 text-xs">{player.team.name}</span>
                   </div>
                   <div className="flex items-center">
                     <span className="mr-1">⭐</span>
@@ -348,7 +345,7 @@ export default function TeamOptimizer({ players, championship }: TeamOptimizerPr
                         <div className="font-medium text-gray-900">{player.name}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{player.team}</div>
+                        <div className="text-sm text-gray-500">{player.team.name}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
@@ -363,7 +360,7 @@ export default function TeamOptimizer({ players, championship }: TeamOptimizerPr
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="text-sm font-medium text-green-600">
-                          €{(player.marketValue || player.price).toLocaleString()}
+                          {player.marketValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                         </span>
                       </td>
                     </tr>

@@ -44,6 +44,7 @@ export interface TeamPredictions {
   strongPositions: string[]
   weakPositions: string[]
   keyPlayers: string[]
+  notes?: string
 }
 
 export interface TeamResults {

@@ -3,11 +3,7 @@ import { useTeamHistory } from '../hooks/useTeamHistory'
 import { TeamHistory } from '../types/history'
 import UpdateResultsModal from './UpdateResultsModal'
 
-interface TeamHistoryViewProps {
-  championship?: any
-}
-
-export default function TeamHistoryView({ championship }: TeamHistoryViewProps) {
+export default function TeamHistoryView() {
   const {
     teamHistory,
     performanceMetrics,
@@ -22,7 +18,7 @@ export default function TeamHistoryView({ championship }: TeamHistoryViewProps) 
 
   const [activeTab, setActiveTab] = useState<'recent' | 'best' | 'all' | 'stats'>('recent')
   const [selectedTeam, setSelectedTeam] = useState<TeamHistory | null>(null)
-  const [filterChampionship, setFilterChampionship] = useState<string>('')
+  const [filterChampionship] = useState<string>('')
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [teamToUpdate, setTeamToUpdate] = useState<TeamHistory | null>(null)
 

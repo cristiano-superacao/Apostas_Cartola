@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Championship, ChampionshipData, Team, Player, AVAILABLE_CHAMPIONSHIPS } from '../types/championships'
+import DataManager from '../lib/dataManager'
 
 // Mock data generator for realistic football data
 const generateMockPlayers = (championship: Championship, teams: Team[]): Player[] => {
@@ -224,6 +225,10 @@ export const useChampionshipData = () => {
       setChampionshipData(data)
       setSelectedChampionship(championship)
       
+      // Inicializar dados no DataManager
+      const dataManager = DataManager.getInstance()
+      dataManager.initializePlayersData(players)
+      
       // Store in localStorage for persistence
       localStorage.setItem('selectedChampionship', JSON.stringify(championship))
       localStorage.setItem(`championshipData_${championship.id}`, JSON.stringify(data))
@@ -244,6 +249,11 @@ export const useChampionshipData = () => {
         const data = JSON.parse(cachedData)
         setChampionshipData(data)
         setSelectedChampionship(championship)
+        
+        // Inicializar dados no DataManager
+        const dataManager = DataManager.getInstance()
+        dataManager.initializePlayersData(data.players)
+        
         localStorage.setItem('selectedChampionship', JSON.stringify(championship))
         return
       } catch (e) {
@@ -295,6 +305,10 @@ export const useChampionshipData = () => {
           const data = JSON.parse(cachedData)
           setChampionshipData(data)
           setSelectedChampionship(championship)
+          
+          // Inicializar dados no DataManager
+          const dataManager = DataManager.getInstance()
+          dataManager.initializePlayersData(data.players)
         } else {
           loadChampionshipData(championship)
         }

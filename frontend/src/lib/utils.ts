@@ -1,7 +1,7 @@
 // API configuration and utilities
 import axios from 'axios'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE_URL = 'http://localhost:8000'
 
 // Create axios instance
 export const api = axios.create({
@@ -159,7 +159,7 @@ export const debounce = <T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeout: NodeJS.Timeout | undefined
+  let timeout: number | undefined
   
   return (...args: Parameters<T>) => {
     clearTimeout(timeout)

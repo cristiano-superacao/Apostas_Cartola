@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useTeamHistory } from '../hooks/useTeamHistory'
+
 import { TeamHistory } from '../types/history'
 
 interface UpdateResultsModalProps {
