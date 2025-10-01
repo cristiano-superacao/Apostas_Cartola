@@ -1,12 +1,12 @@
+<<<<<<< HEAD
 # SuperMittos - Plataforma de Análise Futebolística 🏆
 
 ![SuperMittos Logo](https://img.shields.io/badge/SuperMittos-Football%20Analytics-blue)
-![Python](https://img.shields.io/badge/Python-3.11+-green)
+![React](https://img.shields.io/badge/React-18.2+-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Latest-red)
-![Next.js](https://img.shields.io/badge/Next.js-14+-black)
+![Python](https://img.shields.io/badge/Python-3.11+-green)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13+-blue)
-![Docker](https://img.shields.io/badge/Docker-Ready-blue)
+![Vite](https://img.shields.io/badge/Vite-4.5+-yellow)
 
 ## 🎯 Visão Geral
 
@@ -17,37 +17,37 @@ SuperMittos é uma plataforma avançada de análise futebolística que coleta da
 - 🔄 **ETL Automatizado**: Coleta dados do Cartola FC, FootyStats, SofaScore e sites de prováveis escalações
 - 🤖 **IA para Otimização**: Algoritmos de programação linear para criação de times ideais
 - 📊 **Analytics Avançado**: Dashboards interativos com estatísticas detalhadas
-- 🌐 **Interface Responsiva**: Frontend moderno em React/Next.js
-- 🔗 **API Robusta**: Backend FastAPI com documentação automática
-- ⚡ **Cache Inteligente**: Sistema Redis para performance otimizada
+- 🌐 **Interface Responsiva**: Frontend moderno em React + Vite
+- 🔗 **API Robusta**: Backend Python com integração PostgreSQL/Supabase
+- ⚡ **Performance Otimizada**: Build otimizado com code splitting
 
 ## 🏗️ Arquitetura
 
 ```
 SuperMittos/
-├── 🔧 Backend (Python/FastAPI)
-│   ├── API REST completa
+├── 🔧 Backend (Python)
+│   ├── API HTTP com PostgreSQL
 │   ├── Sistema ETL multi-source
-│   ├── Engine de otimização (PuLP)
-│   └── Modelos de dados inteligentes
+│   ├── Engine de otimização
+│   └── Integração Supabase
 │
-├── 🎨 Frontend (Next.js/TypeScript)
+├── 🎨 Frontend (React + Vite)
 │   ├── Dashboard interativo
 │   ├── Visualizações em tempo real
 │   ├── Interface responsiva
-│   └── PWA ready
+│   └── Build otimizado (195KB)
 │
-├── 🗄️ Database (PostgreSQL)
-│   ├── Schema otimizado
-│   ├── Índices inteligentes
+├── 🗄️ Database (PostgreSQL/Supabase)
+│   ├── Schema completo
+│   ├── Connection pooling
 │   ├── Views analíticas
-│   └── Triggers automáticos
+│   └── Dados mock para fallback
 │
-└── 🐳 Deploy (Docker)
-    ├── Multi-container setup
-    ├── Nginx reverse proxy
-    ├── SSL/TLS ready
-    └── Production optimized
+└── 🚀 Deploy (Netlify)
+    ├── SPA configuration
+    ├── Auto-deploy GitHub
+    ├── Otimizações de performance
+    └── https://supermittos.netlify.app
 ```
 
 ## 🚀 Quick Start
@@ -55,57 +55,95 @@ SuperMittos/
 ### 💻 Desenvolvimento Local
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/supermittos.git
+git clone https://github.com/cristiano-superacao/Apostas_Cartola.git
 cd supermittos
 
-# 2. Setup automático
-npm run setup
-# ou manualmente: setup.bat (Windows) / ./setup.sh (Linux/Mac)
+# 2. Frontend (React + Vite)
+cd frontend
+npm install
+npm run dev  # http://localhost:5173
 
-# 3. Executar
-npm run dev
+# 3. Backend (Python)
+cd ../backend
+python supabase_server.py  # http://localhost:8000
 ```
 
 ### ☁️ Deploy na Nuvem
 ```bash
-# 1. Configure banco na nuvem (Supabase/Railway/Neon)
-# 2. Configure .env.production
-# 3. Deploy automático via GitHub Actions
-# ou manual:
-vercel --prod        # Backend
-netlify deploy --prod --dir=frontend/.next  # Frontend
+# 1. Build otimizado
+cd frontend
+npm run build  # dist/ com 195KB otimizado
+
+# 2. Deploy Netlify (3 opções)
+# Manual: arraste frontend/dist para netlify.com
+# Auto: conecte GitHub repo no Netlify
+# CLI: npx netlify deploy --prod --dir=dist
 ```
 
 ### 🎯 Acessos
-- 🌍 **Frontend**: http://localhost:3000 (local) | https://supermittos.netlify.app (prod)
-- 🔧 **API**: http://localhost:8000 (local) | https://supermittos.vercel.app (prod) 
-- 📚 **Docs**: http://localhost:8000/docs (local) | https://supermittos.vercel.app/docs (prod)
+- 🌍 **Frontend**: http://localhost:5173 (local) | https://supermittos.netlify.app (prod)
+- 🔧 **API**: http://localhost:8000 (local)
+- 📚 **Build**: 195KB total, code splitting ativo
 
-## 📚 Fontes de Dados
+## 📊 Performance e Otimizações
 
-### 🎯 Cartola FC
-- Mercado em tempo real
-- Pontuações por rodada
-- Status dos jogadores
-- Probabilidade de escalação
+### Build Otimizado
+- **Total**: 195KB (64KB compressed)
+- **Vendor**: 140KB (bibliotecas)
+- **Utils**: 35KB (utilitários)
+- **App**: 18KB (código principal)
+- **CSS**: 17KB (estilos)
+- **Code Splitting**: Ativo
+- **Build Time**: ~24s
 
-### ⚽ FootyStats
-- Estatísticas detalhadas de jogadores
-- Dados históricos de performance
-- Métricas avançadas (xG, xA)
-- Comparações entre ligas
+### Features Técnicas
+- SPA com React Router
+- Fallback data para offline
+- Environment variables (VITE_API_URL)
+- Responsive design (mobile-first)
+- TypeScript strict mode
+- Tailwind CSS otimizado
 
-### 📱 SofaScore
-- Dados em tempo real
-- Ratings de performance
-- Estatísticas de partidas
-- Tendências de forma
+## 🚀 Deploy e Produção
 
-### 🔮 Sites de Prováveis
-- Escalações prováveis
-- Status de lesões
-- Notícias de times
-- Atualizações de última hora
+### ✅ PRONTO PARA DEPLOY!
+
+#### 🔥 **MAIS RÁPIDO: Upload Manual**
+1. Vá para: https://app.netlify.com/sites/supermittos/deploys
+2. Arraste a pasta `frontend/dist` para "Deploy manually"
+3. ✅ Pronto! https://supermittos.netlify.app
+
+#### ⚡ **MAIS INTELIGENTE: GitHub Auto-Deploy**
+1. https://app.netlify.com/sites/supermittos/settings/deploys
+2. "Link repository" → `cristiano-superacao/Apostas_Cartola`
+3. Build command: `cd frontend && npm install && npm run build`
+4. Publish directory: `frontend/dist`
+
+#### 💻 **MAIS TÉCNICO: Netlify CLI**
+```bash
+cd frontend
+npx netlify deploy --prod --dir=dist --site=supermittos
+```
+
+### Estrutura do Projeto
+```
+frontend/
+├── src/
+│   ├── App.tsx           # App principal React
+│   ├── components/       # Componentes React
+│   ├── lib/             # API e utils
+│   └── types/           # TypeScript interfaces
+├── package.json         # Dependências Node.js
+└── dist/               # Build otimizado (195KB)
+
+backend/
+├── supabase_server.py   # Servidor Python + PostgreSQL
+├── simple_server.py     # Servidor mock simples
+└── requirements.txt     # Dependências Python
+
+database/
+└── supabase_complete_schema.sql  # Schema PostgreSQL
+```
 
 ## 🤖 Sistema de Otimização
 
@@ -126,130 +164,35 @@ netlify deploy --prod --dir=frontend/.next  # Frontend
 - Apostas em jogadores em alta
 - Alto risco/alto retorno
 
-### Algoritmos Utilizados
-- **Programação Linear Inteira**: Otimização matemática para seleção ótima
-- **Fuzzy Matching**: Correspondência inteligente entre diferentes fontes
-- **Machine Learning**: Predição de performance baseada em histórico
-- **Análise de Risco**: Avaliação probabilística de escalação
-
 ## 📊 Dashboard Analytics
 
-### Métricas em Tempo Real
-- 📈 Performance de jogadores
-- 💰 Variação de preços do mercado
-- 🎯 Sugestões personalizadas
-- 📋 Status do ETL
-
-### Visualizações Interativas
-- Gráficos de tendência
-- Mapas de calor de performance
-- Comparações lado a lado
-- Análise de ROI
+### Funcionalidades Ativas
+- 📈 Dashboard com estatísticas
+- 👥 Lista de jogadores
+- ⚽ Otimizador de time
+- 📊 Status do mercado
+- 📱 Design responsivo
+- 🔄 Dados mock funcionando
 
 ## 🛠️ Desenvolvimento
 
-### Setup Local
-```bash
-# Backend
-cd backend
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
-pip install -r requirements.txt
-playwright install chromium
-uvicorn app.main:app --reload
+### Stack Atualizada
+- **Frontend**: React 18.2.0 + Vite 4.5.14 (migrado do Next.js)
+- **Backend**: Python HTTP server + PostgreSQL
+- **Database**: Supabase/PostgreSQL com connection pooling
+- **Deploy**: Netlify com SPA configuration
 
+### Comandos Principais
+```bash
 # Frontend
-cd frontend
-npm install
-npm run dev
+npm run dev      # Desenvolvimento
+npm run build    # Build otimizado
+npm run preview  # Preview da build
+
+# Backend
+python supabase_server.py    # Servidor com PostgreSQL
+python simple_server.py      # Servidor mock simples
 ```
-
-### Estrutura do Projeto
-```
-backend/
-├── app/
-│   ├── main.py           # FastAPI app principal
-│   ├── api/              # Endpoints da API
-│   ├── etl/              # Sistema ETL
-│   ├── models/           # Modelos SQLAlchemy
-│   └── services/         # Lógica de negócio
-├── requirements.txt      # Dependências Python
-└── Dockerfile           # Container backend
-
-frontend/
-├── src/
-│   ├── app/             # App Router (Next.js 14)
-│   ├── components/      # Componentes React
-│   ├── hooks/           # Custom hooks
-│   └── utils/           # Utilitários
-├── package.json         # Dependências Node.js
-└── Dockerfile          # Container frontend
-
-database/
-└── schema.sql          # Schema PostgreSQL
-
-docker/
-├── docker-compose.yml  # Orquestração
-└── nginx.conf         # Configuração proxy
-```
-
-## 📊 Performance
-
-### Benchmarks
-- **ETL Full Cycle**: ~15 minutos para todas as fontes
-- **API Response Time**: <100ms (95th percentile)
-- **Optimization Algorithm**: <2s para gerar time ótimo
-- **Database Queries**: <50ms (média)
-
-### Otimizações Implementadas
-- Connection pooling otimizado
-- Cache multi-layer (Redis + Application)
-- Lazy loading no frontend
-- Compressão gzip/brotli
-- Image optimization automática
-
-## 🔐 Segurança
-
-### Medidas Implementadas
-- 🔒 Autenticação JWT
-- 🛡️ Rate limiting por IP
-- 🔐 Criptografia de dados sensíveis
-- 🚫 Proteção contra CSRF/XSS
-- 📝 Logs de auditoria
-- 🔑 Gestão segura de secrets
-
-## 🚀 Deploy e Produção
-
-### Opções de Deploy
-
-#### 🌐 Cloud (Recomendado)
-- **Frontend**: Netlify (deploy estático otimizado)
-- **Backend**: Vercel (serverless functions)
-- **Banco**: Supabase/Railway/Neon (PostgreSQL na nuvem)
-- **Cache**: Upstash Redis (serverless)
-
-#### 🐳 Docker (VPS/Servidor)
-```bash
-docker-compose up -d
-```
-
-#### ☁️ Cloud Providers
-- **Vercel**: Deploy automático via Git
-- **Netlify**: Build estático otimizado
-- **Railway**: Full-stack deployment
-- **Render**: Container-based
-- **AWS/Azure**: Enterprise ready
-
-### Monitoramento
-- Health checks automáticos
-- GitHub Actions CI/CD
-- Logs centralizados
-- Métricas de performance
-
-Para instruções detalhadas:
-- 📚 **Deploy Local**: [DEPLOYMENT.md](DEPLOYMENT.md)
-- ☁️ **Deploy Nuvem**: [DEPLOY-GUIDE.md](DEPLOY-GUIDE.md)
 
 ## 🤝 Contribuindo
 
@@ -260,12 +203,6 @@ Para instruções detalhadas:
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-### Guidelines
-- Siga os padrões de código estabelecidos
-- Adicione testes para novas funcionalidades
-- Documente mudanças significativas
-- Use conventional commits
-
 ## 📄 Licença
 
 Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE) para detalhes.
@@ -273,16 +210,14 @@ Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICEN
 ## 🙏 Agradecimentos
 
 - Comunidade Cartola FC
-- Desenvolvedores do FastAPI
-- Time do Next.js
+- Desenvolvedores do React e Vite
+- Time do Supabase
 - Contribuidores open-source
 
 ## 📞 Suporte
 
-- 📧 Email: suporte@supermittos.com
-- 💬 Discord: [SuperMittos Community](https://discord.gg/supermittos)
-- 🐛 Issues: [GitHub Issues](https://github.com/seu-usuario/supermittos/issues)
-- 📖 Docs: [Documentação Completa](https://docs.supermittos.com)
+- 🐛 Issues: [GitHub Issues](https://github.com/cristiano-superacao/Apostas_Cartola/issues)
+- 🌐 Site: https://supermittos.netlify.app
 
 ---
 
@@ -290,6 +225,189 @@ Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICEN
 
 **Feito com ❤️ para a comunidade futebolística brasileira**
 
-[Website](https://supermittos.com) • [Documentação](https://docs.supermittos.com) • [Discord](https://discord.gg/supermittos)
+[Website](https://supermittos.netlify.app) • [Deploy Guide](DEPLOY_NOW.md)
 
 </div>
+=======
+# README - Cartola Analytics & Apostas Esportivas
+
+Sistema completo de análise do Cartola FC e apostas esportivas com frontend web e aplicativo móvel.
+
+## 🚀 Tecnologias
+
+### Backend
+- Node.js + Express + TypeScript
+- MongoDB + Mongoose
+- JWT Authentication
+- Rate Limiting
+
+### Frontend
+- Next.js 14 + React
+- Tailwind CSS
+- TypeScript
+- Axios
+
+### Mobile
+- React Native + Expo
+- NativeWind
+- React Navigation
+
+## 📋 Pré-requisitos
+
+- Node.js (versão 18 ou superior)
+- MongoDB (local ou MongoDB Atlas)
+- Git
+- Expo CLI (para o aplicativo móvel)
+
+## ⚡ Instalação e Configuração
+
+### 1. Clone o repositório
+```bash
+git clone https://github.com/cristiano-superacao/Apostas_Cartola.git
+cd Apostas_Cartola/cartola-analytics
+```
+
+### 2. Configuração do Backend
+```bash
+cd backend
+npm install
+cp .env.example .env
+```
+
+Edite o arquivo `.env` com suas configurações:
+```bash
+# Base de Dados
+MONGODB_URI=mongodb://localhost:27017/cartola-analytics
+PORT=3001
+JWT_SECRET=seu_jwt_secret_super_seguro_aqui
+```
+
+### 3. Configuração do Frontend
+```bash
+cd ../frontend
+npm install
+```
+
+### 4. Configuração do Mobile
+```bash
+cd ../mobile
+npm install
+```
+
+### 5. MongoDB
+Certifique-se de que o MongoDB está rodando:
+```bash
+# Windows (se instalado como serviço)
+net start MongoDB
+
+# Ou usando Docker
+docker run -d -p 27017:27017 --name mongodb mongo:latest
+```
+
+## 🏃‍♂️ Executando o Projeto
+
+### Opção 1: Executar todos os serviços (recomendado)
+```bash
+# Na pasta raiz (cartola-analytics)
+npm run dev
+```
+
+### Opção 2: Executar individualmente
+
+**Backend:**
+```bash
+cd backend
+npm run dev
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm run dev
+```
+
+**Mobile:**
+```bash
+cd mobile
+npm start
+```
+
+## 📱 Acesso às Aplicações
+
+- **Frontend Web:** http://localhost:3000
+- **Backend API:** http://localhost:3001
+- **Mobile:** Use o Expo Go app para escanear o QR code
+
+## 🔗 Endpoints da API
+
+### Jogadores
+- `GET /api/players` - Lista jogadores
+- `POST /api/players/optimize-team` - Otimiza escalação
+
+### Times
+- `GET /api/teams` - Lista times
+- `POST /api/teams` - Cria novo time
+
+### Partidas
+- `GET /api/matches` - Lista partidas
+- `GET /api/matches/:id` - Detalhes da partida
+
+### Apostas
+- `GET /api/bets` - Lista apostas
+- `GET /api/bets/stats` - Estatísticas de apostas
+
+### Analytics
+- `GET /api/analytics/dashboard` - Dashboard principal
+- `GET /api/analytics/players` - Analytics de jogadores
+- `GET /api/analytics/teams` - Analytics de times
+
+### Histórico
+- `GET /api/history/teams` - Histórico de times
+- `GET /api/history/bets` - Histórico de apostas
+
+## 🐳 Docker (Opcional)
+
+Para executar com Docker:
+
+```bash
+# Na pasta raiz
+docker-compose up -d
+```
+
+## 🚀 Deploy
+
+### Frontend (Vercel)
+```bash
+cd frontend
+npm run build
+# Deploy para Vercel
+```
+
+### Backend (Railway/Heroku)
+```bash
+cd backend
+npm run build
+# Deploy para sua plataforma preferida
+```
+
+## 🔧 Scripts Disponíveis
+
+### Backend
+- `npm run dev` - Execução em desenvolvimento
+- `npm run build` - Build de produção
+- `npm start` - Execução de produção
+
+### Frontend
+- `npm run dev` - Desenvolvimento
+- `npm run build` - Build de produção
+- `npm start` - Execução de produção
+
+### Mobile
+- `npm start` - Inicia o Expo
+- `npm run android` - Executa no Android
+- `npm run ios` - Executa no iOS
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
+>>>>>>> a4d661dd3ce14faa6f78ad33152757cb2e4e2d1f
