@@ -38,3 +38,21 @@ echo 🎉 SuperMittos iniciado com sucesso!
 echo    Feche esta janela quando terminar de usar.
 echo.
 pause
+
+CREATE TABLE jogadores (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    posicao VARCHAR(50),
+    time VARCHAR(100),
+    preco NUMERIC,
+    rating NUMERIC
+);
+
+CREATE TABLE ofertas (
+    id SERIAL PRIMARY KEY,
+    jogador_id INTEGER REFERENCES jogadores(id),
+    valor NUMERIC,
+    status VARCHAR(20)
+);
+
+-- Adicione outras tabelas conforme seu arquivo database/schema.sql
