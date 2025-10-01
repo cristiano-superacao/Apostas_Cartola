@@ -1,0 +1,62 @@
+name: 🚀 Deploy SuperMittos to Netlify
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
+        
+    - name: 📋 Install dependencies
+      run: |
+        cd frontend
+        npm ci
+        
+    - name: 🔍 Run TypeScript check
+      run: |
+        cd frontend
+        npm run type-check
+        
+    - name: 🧹 Run ESLint
+      run: |
+        cd frontend
+        npm run lint
+        
+    - name: 🏗️ Build application
+      run: |
+        cd frontend
+        npm run build
+        
+    - name: 📊 Bundle size analysis
+      run: |
+        cd frontend
+        ls -la dist/
+        du -sh dist/*
+        
+    - name: 🚀 Deploy to Netlify
+      uses: netlify/actions/cli@master
+      with:
+        args: deploy --dir=frontend/dist --functions=functions --prod
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        
+    - name: 🎉 Deployment Success
+      run: |
+        echo "✅ SuperMittos deployed successfully!"
+        echo "🌍 URL: https://supermittos.netlify.app"
+        echo "📊 Build size: $(du -sh frontend/dist/)"
