@@ -1,7 +1,7 @@
 # Netlify Configuration para React + Vite
 [build]
   publish = "frontend/dist"
-  command = "cd frontend && npm ci --prefer-offline && npm run build"
+  command = "npm ci --prefer-offline && npm run build"
 
 [build.environment]
   NODE_VERSION = "18"

@@ -6,6 +6,9 @@ import TeamOptimizer from './components/TeamOptimizer'
 import MarketStatus from './components/MarketStatus'
 import ChampionshipSelector from './components/ChampionshipSelector'
 import TeamHistoryView from './components/TeamHistoryView'
+import FormationConfig from './components/FormationConfig'
+import SourceConfig from './components/SourceConfig'
+import AutoGenerator from './components/AutoGenerator'
 import Loading from './components/Loading'
 import ErrorBoundary from './components/ErrorBoundary'
 import { useChampionshipData } from './hooks/useChampionshipData'
@@ -92,6 +95,12 @@ function App() {
         return <MarketStatus />
       case 'history':
         return <TeamHistoryView />
+      case 'formation-config':
+        return <FormationConfig onViewChange={setCurrentView} />
+      case 'source-config':
+        return <SourceConfig onViewChange={setCurrentView} />
+      case 'auto-generator':
+        return <AutoGenerator onViewChange={setCurrentView} />
       default:
         return <Dashboard data={currentDashData} championship={selectedChampionship || undefined} onViewChange={setCurrentView} />
     }
