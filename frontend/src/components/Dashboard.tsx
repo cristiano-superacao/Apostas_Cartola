@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTeamHistory } from '../hooks/useTeamHistory'
 import { Championship } from '../types/championships'
+import QuickActions from './QuickActions'
 
 interface DashboardData {
   totalPlayers: number
@@ -12,9 +13,10 @@ interface DashboardData {
 interface DashboardProps {
   data: DashboardData | null
   championship?: Championship
+  onViewChange: (view: string) => void
 }
 
-export default function Dashboard({ data, championship }: DashboardProps) {
+export default function Dashboard({ data, championship, onViewChange }: DashboardProps) {
   const {
     teamHistory,
     performanceMetrics,
@@ -114,7 +116,7 @@ export default function Dashboard({ data, championship }: DashboardProps) {
                   <div>
                     <span className="text-sm lg:text-base text-gray-700 font-medium">{team.name}</span>
                     <div className="text-xs text-gray-500">
-                      {team.championship.name} • {team.formation} • €{team.totalCost.toLocaleString()}
+                      {team.championship.name} • {team.formation} • R$ {team.totalCost.toLocaleString('pt-BR')}
                     </div>
                   </div>
                 </div>
@@ -163,6 +165,9 @@ export default function Dashboard({ data, championship }: DashboardProps) {
           </div>
         </div>
       )}
+
+      {/* Quick Actions */}
+      <QuickActions onViewChange={onViewChange} />
 
       {/* Quick Actions */}
       <div className="bg-white rounded-lg shadow-md p-4 lg:p-6">

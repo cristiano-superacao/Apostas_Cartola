@@ -93,7 +93,7 @@ function App() {
       case 'history':
         return <TeamHistoryView championship={selectedChampionship} />
       default:
-        return <Dashboard data={currentDashData} championship={selectedChampionship} />
+        return <Dashboard data={currentDashData} championship={selectedChampionship} onViewChange={setCurrentView} />
     }
   }
 
