@@ -4,19 +4,34 @@ import Dashboard from './components/Dashboard'
 import PlayerList from './components/PlayerList'
 import TeamOptimizer from './components/TeamOptimizer'
 import MarketStatus from './components/MarketStatus'
+import ChampionshipSelector from './components/ChampionshipSelector'
+import TeamHistoryView from './components/TeamHistoryView'
 import Loading from './components/Loading'
 import ErrorBoundary from './components/ErrorBoundary'
+import { useChampionshipData } from './hooks/useChampionshipData'
 import { getPlayers, getDashboardData } from './lib/api'
 
 function App() {
   const [currentView, setCurrentView] = useState('dashboard')
-  const [players, setPlayers] = useState([])
-  const [dashboardData, setDashboardData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  
+  // Use championship data hook
+  const {
+    selectedChampionship,
+    championshipData,
+    loading: championshipLoading,
+    error: championshipError,
+    changeChampionship,
+    getTopPlayers
+  } = useChampionshipData()
+
+  // Legacy data for fallback
+  const [players, setPlayers] = useState([])
+  const [dashboardData, setDashboardData] = useState(null)
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadFallbackData = async () => {
       try {
         setLoading(true)
         setError(null)
@@ -27,22 +42,22 @@ function App() {
         setPlayers(playersData)
         setDashboardData(dashData)
       } catch (error) {
-        console.error('Erro ao carregar dados:', error)
+        console.error('Erro ao carregar dados de fallback:', error)
         setError('Erro ao carregar dados. Usando dados offline.')
       } finally {
         setLoading(false)
       }
     }
 
-    loadData()
+    loadFallbackData()
   }, [])
 
   const renderContent = () => {
-    if (loading) {
+    if (loading || championshipLoading) {
       return <Loading message="Carregando dados do SuperMittos..." size="lg" />
     }
 
-    if (error) {
+    if (error || championshipError) {
       return (
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
           <div className="flex">
@@ -52,29 +67,48 @@ function App() {
               </svg>
             </div>
             <div className="ml-3">
-              <p className="text-sm text-yellow-700">{error}</p>
+              <p className="text-sm text-yellow-700">{error || championshipError}</p>
             </div>
           </div>
         </div>
       )
     }
 
+    // Use championship data if available, fallback to legacy data
+    const currentPlayers = championshipData?.players || players
+    const currentDashData = championshipData ? {
+      totalPlayers: championshipData.players.length,
+      activeOffers: championshipData.teams.length * 2,
+      avgPrice: Math.round(championshipData.players.reduce((sum, p) => sum + p.marketValue, 0) / championshipData.players.length),
+      topPlayer: getTopPlayers(1)[0]?.name || 'N/A'
+    } : dashboardData
+
     switch (currentView) {
       case 'players':
-        return <PlayerList players={players} />
+        return <PlayerList players={currentPlayers} championship={selectedChampionship} />
       case 'optimizer':
-        return <TeamOptimizer players={players} />
+        return <TeamOptimizer players={currentPlayers} championship={selectedChampionship} />
       case 'market':
-        return <MarketStatus />
+        return <MarketStatus championship={selectedChampionship} />
+      case 'history':
+        return <TeamHistoryView championship={selectedChampionship} />
       default:
-        return <Dashboard data={dashboardData} />
+        return <Dashboard data={currentDashData} championship={selectedChampionship} />
     }
   }
 
   return (
     <ErrorBoundary>
       <Layout currentView={currentView} onViewChange={setCurrentView}>
-        {error && (
+        {/* Championship Selector */}
+        <div className="mb-6">
+          <ChampionshipSelector
+            selectedChampionship={selectedChampionship}
+            onChampionshipChange={changeChampionship}
+          />
+        </div>
+
+        {(error || championshipError) && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -83,7 +117,7 @@ function App() {
                 </svg>
               </div>
               <div className="ml-3">
-                <p className="text-sm text-yellow-700">{error}</p>
+                <p className="text-sm text-yellow-700">{error || championshipError}</p>
               </div>
             </div>
           </div>
