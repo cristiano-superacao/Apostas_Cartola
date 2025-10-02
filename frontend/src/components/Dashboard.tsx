@@ -32,41 +32,102 @@ export default function Dashboard({ data, onViewChange }: DashboardProps) {
 
   const recentTeams = getRecentTeams(3)
 
-  // Stats baseados na imagem
+  // Novos cards de análise
   const stats = [
     {
-      name: 'Total de Jogadores',
-      value: '838',
-      icon: '👥',
+      name: 'SG (Saldo de Gols)',
+      value: performanceMetrics?.sg ?? '-',
+      icon: '🛡️',
       iconBg: 'bg-blue-500',
-      change: '+12%',
-      changeType: 'increase'
+      change: '',
+      changeType: 'neutral'
     },
     {
-      name: 'Times Criados',
-      value: '0',
-      icon: '⚽',
+      name: 'Pontuação Média',
+      value: performanceMetrics?.avgScore ?? '-',
+      icon: '📊',
       iconBg: 'bg-green-500',
-      change: '0 recentes',
+      change: '',
       changeType: 'neutral'
     },
     {
-      name: 'Acurácia Média',
-      value: '0.0%',
-      icon: '🎯',
+      name: 'Desarmes',
+      value: performanceMetrics?.tackles ?? '-',
+      icon: '🦵',
       iconBg: 'bg-purple-500',
-      change: 'Regular',
+      change: '',
       changeType: 'neutral'
     },
     {
-      name: 'Melhor Jogador',
-      value: 'Matheus Ju...',
-      icon: '⭐',
+      name: 'Chutes no Gol',
+      value: performanceMetrics?.shotsOnTarget ?? '-',
+      icon: '🥅',
       iconBg: 'bg-yellow-500',
-      change: 'Novo',
+      change: '',
       changeType: 'neutral'
     }
   ]
+  // Classificação e jogos da rodada
+  const standings = data?.championship?.standings || [];
+  const fixtures = data?.championship?.fixtures?.filter(f => f.round === data?.championship?.currentRound) || [];
+
+  // Card de classificação
+  const renderStandings = () => (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 mt-6">
+      <h2 className="text-lg font-bold text-gray-900 mb-4">Classificação Atual</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-sm">
+          <thead>
+            <tr className="bg-gray-50">
+              <th className="px-2 py-1 text-left">Pos</th>
+              <th className="px-2 py-1 text-left">Time</th>
+              <th className="px-2 py-1 text-center">Pts</th>
+              <th className="px-2 py-1 text-center">J</th>
+              <th className="px-2 py-1 text-center">V</th>
+              <th className="px-2 py-1 text-center">E</th>
+              <th className="px-2 py-1 text-center">D</th>
+              <th className="px-2 py-1 text-center">SG</th>
+            </tr>
+          </thead>
+          <tbody>
+            {standings.map((s) => (
+              <tr key={s.team.id} className="border-b">
+                <td className="px-2 py-1">{s.position}</td>
+                <td className="px-2 py-1">{s.team.name}</td>
+                <td className="px-2 py-1 text-center">{s.points}</td>
+                <td className="px-2 py-1 text-center">{s.played}</td>
+                <td className="px-2 py-1 text-center">{s.won}</td>
+                <td className="px-2 py-1 text-center">{s.drawn}</td>
+                <td className="px-2 py-1 text-center">{s.lost}</td>
+                <td className="px-2 py-1 text-center">{s.goalDifference}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+
+  // Card de jogos da rodada
+  const renderFixtures = () => (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 mt-6">
+      <h2 className="text-lg font-bold text-gray-900 mb-4">Jogos da Rodada {data?.championship?.currentRound}</h2>
+      <div className="space-y-2">
+        {fixtures.length === 0 ? (
+          <div className="text-gray-500">Nenhum jogo encontrado.</div>
+        ) : (
+          fixtures.map(f => (
+            <div key={f.id} className="flex items-center justify-between py-2 border-b">
+              <span className="font-medium text-gray-800">{f.homeTeam.name}</span>
+              <span className="mx-2 text-gray-600">vs</span>
+              <span className="font-medium text-gray-800">{f.awayTeam.name}</span>
+              <span className="ml-4 text-xs text-gray-500">{f.date}</span>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div className="space-y-6">
@@ -101,6 +162,12 @@ export default function Dashboard({ data, onViewChange }: DashboardProps) {
           </div>
         ))}
       </div>
+
+      {/* Classificação */}
+      {renderStandings()}
+
+      {/* Jogos da rodada */}
+      {renderFixtures()}
 
       {/* Grid com Ações Rápidas e Configurar Times lado a lado */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

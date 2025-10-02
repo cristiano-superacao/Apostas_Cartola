@@ -4,7 +4,6 @@ import Dashboard from './components/Dashboard'
 import PlayerList from './components/PlayerList'
 import TeamOptimizer from './components/TeamOptimizer'
 import MarketStatus from './components/MarketStatus'
-import ChampionshipSelector from './components/ChampionshipSelector'
 import TeamHistoryView from './components/TeamHistoryView'
 import FormationConfig from './components/FormationConfig'
 import SourceConfig from './components/SourceConfig'
@@ -22,12 +21,11 @@ function App() {
   
   // Use championship data hook
   const {
-    selectedChampionship,
-    championshipData,
-    loading: championshipLoading,
-    error: championshipError,
-    changeChampionship,
-    getTopPlayers
+  selectedChampionship,
+  championshipData,
+  loading: championshipLoading,
+  error: championshipError,
+  getTopPlayers
   } = useChampionshipData()
 
   // Legacy data for fallback
@@ -112,14 +110,6 @@ function App() {
   return (
     <ErrorBoundary>
       <Layout currentView={currentView} onViewChange={setCurrentView}>
-        {/* Championship Selector */}
-        <div className="mb-6">
-          <ChampionshipSelector
-            selectedChampionship={selectedChampionship}
-            onChampionshipChange={changeChampionship}
-          />
-        </div>
-
         {(error || championshipError) && (
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
             <div className="flex">

@@ -10,8 +10,7 @@ const navigation: NavigationItem[] = [
   { name: 'Dashboard', id: 'dashboard', icon: '🏠' },
   { name: 'Jogadores', id: 'players', icon: '👥' },
   { name: 'Otimizador', id: 'optimizer', icon: '⚡' },
-  { name: 'Histórico', id: 'history', icon: '📋' },
-  { name: 'Mercado', id: 'market', icon: '📈' },
+  { name: 'Premium', id: 'premium', icon: '�' },
 ]
 
 interface SidebarProps {

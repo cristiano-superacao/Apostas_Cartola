@@ -98,7 +98,7 @@ export const AVAILABLE_CHAMPIONSHIPS: Championship[] = [
     startDate: '2025-04-12',
     endDate: '2025-12-08',
     teams: 20,
-    currentRound: 32,
+  currentRound: 26,
     totalRounds: 38
   }
 ]
