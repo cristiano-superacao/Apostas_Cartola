@@ -9,6 +9,7 @@ import TeamHistoryView from './components/TeamHistoryView'
 import FormationConfig from './components/FormationConfig'
 import SourceConfig from './components/SourceConfig'
 import AutoGenerator from './components/AutoGenerator'
+import PremiumDashboard from './components/PremiumDashboard'
 import Loading from './components/Loading'
 import ErrorBoundary from './components/ErrorBoundary'
 import { useChampionshipData } from './hooks/useChampionshipData'
@@ -101,6 +102,8 @@ function App() {
         return <SourceConfig onViewChange={setCurrentView} />
       case 'auto-generator':
         return <AutoGenerator onViewChange={setCurrentView} />
+      case 'premium':
+        return <PremiumDashboard onViewChange={setCurrentView} />
       default:
         return <Dashboard data={currentDashData} championship={selectedChampionship || undefined} onViewChange={setCurrentView} />
     }

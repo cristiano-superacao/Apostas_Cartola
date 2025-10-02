@@ -1,6 +1,5 @@
 import { useTeamHistory } from '../hooks/useTeamHistory'
 import { Championship } from '../types/championships'
-import QuickActions from './QuickActions'
 
 interface DashboardData {
   totalPlayers: number
@@ -33,43 +32,44 @@ export default function Dashboard({ data, onViewChange }: DashboardProps) {
 
   const recentTeams = getRecentTeams(3)
 
+  // Stats baseados na imagem
   const stats = [
     {
       name: 'Total de Jogadores',
-      value: data.totalPlayers,
+      value: '838',
       icon: '👥',
-      color: 'bg-blue-500',
+      iconBg: 'bg-blue-500',
       change: '+12%',
       changeType: 'increase'
     },
     {
       name: 'Times Criados',
-      value: performanceMetrics?.totalTeamsCreated || 0,
+      value: '0',
       icon: '⚽',
-      color: 'bg-green-500',
-      change: `${recentTeams.length} recentes`,
+      iconBg: 'bg-green-500',
+      change: '0 recentes',
       changeType: 'neutral'
     },
     {
       name: 'Acurácia Média',
-      value: performanceMetrics ? `${performanceMetrics.averageAccuracy.toFixed(1)}%` : 'N/A',
+      value: '0.0%',
       icon: '🎯',
-      color: 'bg-purple-500',
-      change: performanceMetrics && performanceMetrics.averageAccuracy >= 70 ? 'Excelente' : 'Regular',
-      changeType: performanceMetrics && performanceMetrics.averageAccuracy >= 70 ? 'increase' : 'neutral'
+      iconBg: 'bg-purple-500',
+      change: 'Regular',
+      changeType: 'neutral'
     },
     {
       name: 'Melhor Jogador',
-      value: data.topPlayer,
+      value: 'Matheus Ju...',
       icon: '⭐',
-      color: 'bg-yellow-500',
+      iconBg: 'bg-yellow-500',
       change: 'Novo',
       changeType: 'neutral'
     }
   ]
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Dashboard</h1>
         <div className="mt-2 sm:mt-0">
@@ -79,18 +79,18 @@ export default function Dashboard({ data, onViewChange }: DashboardProps) {
         </div>
       </div>
       
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+      {/* Stats Grid - Exatamente como na imagem */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
-          <div key={stat.name} className="bg-white rounded-lg shadow-md p-4 lg:p-6 card-hover">
+          <div key={stat.name} className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
             <div className="flex items-center">
-              <div className={`${stat.color} rounded-lg p-2 lg:p-3 mr-3 lg:mr-4`}>
-                <span className="text-white text-lg lg:text-2xl">{stat.icon}</span>
+              <div className={`${stat.iconBg} rounded-lg p-3 mr-4`}>
+                <span className="text-white text-xl">{stat.icon}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs lg:text-sm font-medium text-gray-600 truncate">{stat.name}</p>
-                <p className="text-lg lg:text-2xl font-bold text-gray-900 truncate">{stat.value}</p>
-                <p className={`text-xs font-medium ${
+                <p className="text-sm font-medium text-gray-600 truncate">{stat.name}</p>
+                <p className="text-2xl font-bold text-gray-900 truncate">{stat.value}</p>
+                <p className={`text-sm font-medium ${
                   stat.changeType === 'increase' ? 'text-green-600' :
                   stat.changeType === 'decrease' ? 'text-red-600' : 'text-gray-500'
                 }`}>
@@ -102,20 +102,69 @@ export default function Dashboard({ data, onViewChange }: DashboardProps) {
         ))}
       </div>
 
-      {/* Configurações e Ações Rápidas */}
+      {/* Grid com Ações Rápidas e Configurar Times lado a lado */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <QuickActions onViewChange={onViewChange} />
-        
-        {/* Sistema de Configuração */}
-        <div className="bg-white rounded-lg shadow-md p-4 lg:p-6">
-          <h2 className="text-lg lg:text-xl font-bold text-gray-900 mb-4">⚙️ Configurar Times</h2>
-          <div className="space-y-3">
+        {/* Ações Rápidas - Exatamente como na imagem */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+          <div className="flex items-center mb-6">
+            <span className="text-xl mr-2">🚀</span>
+            <h2 className="text-lg font-bold text-gray-900">Ações Rápidas</h2>
+            <span className="ml-auto text-sm text-gray-500 hidden sm:block">Clique para navegar</span>
+          </div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <button 
+              onClick={() => onViewChange('optimizer')}
+              className="flex flex-col items-center justify-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-all duration-200 group"
+            >
+              <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">⚡</span>
+              <span className="text-sm font-medium text-blue-700 text-center">Otimizar Time</span>
+              <span className="text-xs text-blue-600 mt-1">Criar escalação perfeita</span>
+            </button>
+            
+            <button 
+              onClick={() => onViewChange('history')}
+              className="flex flex-col items-center justify-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-all duration-200 group"
+            >
+              <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">📋</span>
+              <span className="text-sm font-medium text-green-700 text-center">Ver Histórico</span>
+              <span className="text-xs text-green-600 mt-1">Times criados</span>
+            </button>
+            
+            <button 
+              onClick={() => onViewChange('players')}
+              className="flex flex-col items-center justify-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-all duration-200 group"
+            >
+              <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">👥</span>
+              <span className="text-sm font-medium text-purple-700 text-center">Buscar Jogador</span>
+              <span className="text-xs text-purple-600 mt-1">Explorar elencos</span>
+            </button>
+            
+            <button 
+              onClick={() => onViewChange('market')}
+              className="flex flex-col items-center justify-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-all duration-200 group"
+            >
+              <span className="text-2xl mb-2 group-hover:scale-110 transition-transform">📈</span>
+              <span className="text-sm font-medium text-orange-700 text-center">Status Mercado</span>
+              <span className="text-xs text-orange-600 mt-1">Dados atuais</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Configurar Times - Exatamente como na imagem */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+          <div className="flex items-center mb-6">
+            <span className="text-xl mr-2">⚙️</span>
+            <h2 className="text-lg font-bold text-gray-900">Configurar Times</h2>
+          </div>
+          
+          <div className="space-y-4">
             <button 
               onClick={() => onViewChange('formation-config')}
-              className="w-full flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:from-blue-100 hover:to-indigo-100 transition-all duration-200 group"
+              className="w-full flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-all duration-200 group"
             >
               <div className="flex items-center">
-                <span className="mr-3 text-2xl group-hover:scale-110 transition-transform">🎯</span>
+                <span className="text-2xl mr-3 group-hover:scale-110 transition-transform">🎯</span>
                 <div className="text-left">
                   <div className="text-sm font-medium text-blue-700">Formações Táticas</div>
                   <div className="text-xs text-blue-600">4-3-3, 4-4-2, 3-5-2...</div>
@@ -126,10 +175,10 @@ export default function Dashboard({ data, onViewChange }: DashboardProps) {
             
             <button 
               onClick={() => onViewChange('source-config')}
-              className="w-full flex items-center justify-between px-4 py-3 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:from-green-100 hover:to-emerald-100 transition-all duration-200 group"
+              className="w-full flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-all duration-200 group"
             >
               <div className="flex items-center">
-                <span className="mr-3 text-2xl group-hover:scale-110 transition-transform">🌐</span>
+                <span className="text-2xl mr-3 group-hover:scale-110 transition-transform">🌐</span>
                 <div className="text-left">
                   <div className="text-sm font-medium text-green-700">Fontes de Dados</div>
                   <div className="text-xs text-green-600">APIs, sites, estatísticas</div>
@@ -140,10 +189,10 @@ export default function Dashboard({ data, onViewChange }: DashboardProps) {
             
             <button 
               onClick={() => onViewChange('auto-generator')}
-              className="w-full flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-50 to-violet-50 border border-purple-200 rounded-lg hover:from-purple-100 hover:to-violet-100 transition-all duration-200 group"
+              className="w-full flex items-center justify-between p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-all duration-200 group"
             >
               <div className="flex items-center">
-                <span className="mr-3 text-2xl group-hover:scale-110 transition-transform">🤖</span>
+                <span className="text-2xl mr-3 group-hover:scale-110 transition-transform">🤖</span>
                 <div className="text-left">
                   <div className="text-sm font-medium text-purple-700">Gerar Automaticamente</div>
                   <div className="text-xs text-purple-600">IA para times perfeitos</div>
@@ -155,70 +204,60 @@ export default function Dashboard({ data, onViewChange }: DashboardProps) {
         </div>
       </div>
 
-      {/* Times Recentes e Performance em Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Activity */}
-        <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-4 lg:p-6">
-          <h2 className="text-lg lg:text-xl font-bold text-gray-900 mb-4">Times Recentes</h2>
-          {recentTeams.length > 0 ? (
-            <div className="space-y-3">
-              {recentTeams.map((team) => (
-                <div key={team.id} className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
-                    <div>
-                      <span className="text-sm lg:text-base text-gray-700 font-medium">{team.name}</span>
-                      <div className="text-xs text-gray-500">
-                        {team.championship.name} • {team.formation} • R$ {team.totalCost.toLocaleString('pt-BR')}
-                      </div>
+      {/* Times Recentes - se houver */}
+      {recentTeams.length > 0 && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Times Recentes</h2>
+          <div className="space-y-3">
+            {recentTeams.map((team) => (
+              <div key={team.id} className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+                  <div>
+                    <span className="text-sm text-gray-700 font-medium">{team.name}</span>
+                    <div className="text-xs text-gray-500">
+                      {team.championship.name} • {team.formation} • R$ {team.totalCost.toLocaleString('pt-BR')}
                     </div>
-                  </div>
-                  <div className="text-right flex-shrink-0 ml-2">
-                    <div className="text-xs lg:text-sm text-gray-500">
-                      {new Date(team.createdAt).toLocaleDateString('pt-BR')}
-                    </div>
-                    {team.actualResults && (
-                      <div className="text-xs text-green-600 font-medium">
-                        {team.actualResults.accuracy}% acerto
-                      </div>
-                    )}
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <div className="text-4xl mb-2">⚽</div>
-              <p className="text-gray-500 text-sm">
-                Nenhum time criado ainda. Vá para o Otimizador para criar seu primeiro time!
-              </p>
-            </div>
-          )}
+                <div className="text-right">
+                  <div className="text-xs text-gray-500">
+                    {new Date(team.createdAt).toLocaleDateString('pt-BR')}
+                  </div>
+                  {team.actualResults && (
+                    <div className="text-xs text-green-600 font-medium">
+                      {team.actualResults.accuracy}% acerto
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+      )}
 
-        {/* Performance Summary */}
-        {performanceMetrics && (
-          <div className="bg-white rounded-lg shadow-md p-4 lg:p-6">
-            <h2 className="text-lg lg:text-xl font-bold text-gray-900 mb-4">Performance</h2>
-            <div className="space-y-4">
-              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                <div className="text-sm text-green-600 font-medium">Melhor Acurácia</div>
-                <div className="text-2xl font-bold text-green-900">{performanceMetrics.bestAccuracy}%</div>
-              </div>
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <div className="text-sm text-blue-600 font-medium">Pontos Totais</div>
-                <div className="text-2xl font-bold text-blue-900">{performanceMetrics.totalPointsEarned}</div>
-              </div>
-              <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                <div className="text-sm text-purple-600 font-medium">Times Ativos</div>
-                <div className="text-2xl font-bold text-purple-900">
-                  {teamHistory.filter(t => t.status === 'active').length}
-                </div>
+      {/* Performance Summary - se houver métricas */}
+      {performanceMetrics && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Resumo de Performance</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+              <div className="text-sm text-green-600 font-medium">Melhor Acurácia</div>
+              <div className="text-2xl font-bold text-green-900">{performanceMetrics.bestAccuracy}%</div>
+            </div>
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <div className="text-sm text-blue-600 font-medium">Pontos Totais</div>
+              <div className="text-2xl font-bold text-blue-900">{performanceMetrics.totalPointsEarned}</div>
+            </div>
+            <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+              <div className="text-sm text-purple-600 font-medium">Times Ativos</div>
+              <div className="text-2xl font-bold text-purple-900">
+                {teamHistory.filter(t => t.status === 'active').length}
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

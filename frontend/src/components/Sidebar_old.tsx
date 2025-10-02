@@ -55,14 +55,14 @@ export default function Sidebar({ currentView, onViewChange }: SidebarProps) {
         />
       )}
 
-      {/* Sidebar - Exatamente como na imagem */}
+      {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-xl border-r border-gray-200 transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Logo - Igual à imagem */}
+          {/* Logo */}
           <div className="flex items-center justify-center h-16 px-4 bg-gradient-to-r from-blue-600 to-blue-700">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
@@ -72,8 +72,8 @@ export default function Sidebar({ currentView, onViewChange }: SidebarProps) {
             </div>
           </div>
 
-          {/* Navigation - Layout da imagem */}
-          <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+          {/* Navigation */}
+          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             {navigation.map((item) => {
               const isCurrent = currentView === item.id
               
@@ -81,28 +81,24 @@ export default function Sidebar({ currentView, onViewChange }: SidebarProps) {
                 <button
                   key={item.name}
                   onClick={() => handleNavClick(item.id)}
-                  className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  className={`w-full flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isCurrent
-                      ? "bg-blue-100 text-blue-700 shadow-sm"
-                      : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                      ? "bg-blue-100 text-blue-700 border border-blue-200 shadow-sm"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                   }`}
                 >
-                  <span className="mr-3 text-base">{item.icon}</span>
+                  <span className="mr-3 text-lg">{item.icon}</span>
                   <span className="truncate">{item.name}</span>
                 </button>
               )
             })}
           </nav>
 
-          {/* Footer - Informações do sistema como na imagem */}
-          <div className="px-4 py-4 border-t border-gray-200 bg-gray-50">
-            <div className="text-xs text-gray-600 text-center space-y-1">
-              <p className="font-semibold text-blue-600">SuperMittos v1.0</p>
-              <p>Análise inteligente de futebol</p>
-              <div className="mt-3 pt-2 border-t border-gray-200">
-                <p className="text-green-600 font-medium">🟢 Sistema Online</p>
-                <p className="text-gray-500">Temporada 2025/26</p>
-              </div>
+          {/* Footer */}
+          <div className="px-4 py-4 border-t border-gray-200">
+            <div className="text-xs text-gray-500 text-center">
+              <p className="font-medium">SuperMittos v1.0</p>
+              <p className="mt-1">Análise inteligente de futebol</p>
             </div>
           </div>
         </div>
