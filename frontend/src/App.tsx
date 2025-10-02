@@ -103,7 +103,7 @@ function App() {
       case 'premium':
         return <PremiumDashboard onViewChange={setCurrentView} />
       default:
-        return <Dashboard data={currentDashData} championship={selectedChampionship || undefined} onViewChange={setCurrentView} />
+        return <Dashboard data={currentDashData} />
     }
   }
 
